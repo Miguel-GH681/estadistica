@@ -29,8 +29,8 @@ export class BoardFirebaseService {
     return from(promise);
   }
 
-  removeTodo(todoId: string): Observable<void> {
-    const docRef = doc(this.firestore, 'datos/' + todoId);
+  removeDato(datoId: string): Observable<void> {
+    const docRef = doc(this.firestore, 'datos/' + datoId);
     const promise = deleteDoc(docRef);
     return from(promise);
   }

@@ -23,6 +23,7 @@ export class GraficaComponent implements OnInit{
   history : Array<any> = [];
   graphData: Array<any> = [];
   layout: any;
+  problemSelected : any = null;
 
   constructor(private formBuilder : FormBuilder) {
     this.initForm();
@@ -117,9 +118,16 @@ export class GraficaComponent implements OnInit{
     }
     
     const z1 = (valores['mediaMuestral'] - valores['parametroDeInteres']) / (valores['desviacionEstandar'] / Math.sqrt(valores['tamanioMuestra']))
-    console.log({z0, z1});
+    this.problemSelected = {z0, z1};
     
     this.generateGraph(valores['mediaMuestral'], z0.toFixed(2), z1.toFixed(2), valores['restriccion']);
+  }
+
+  deleteItem(index : number){
+    console.log({obj: this.history[index]});
+    this.boardFirebaseSerice.removeDato(this.history[index]['id']).subscribe(()=>{
+      this.getHistory();
+    })    
   }
 
   async onSubmit() {
@@ -138,8 +146,9 @@ export class GraficaComponent implements OnInit{
       try {
         await this.boardFirebaseSerice.addDato(newObject).subscribe(() =>{
           this.calcularZ(newObject);
-          // this.formulario.reset();
-          console.log('Dato almacenado');
+          this.problemSelected = {...this.problemSelected, ...newObject};
+          console.log({ps: this.problemSelected});
+          this.formulario.reset();
         })
       } catch (err) {
         console.error('Error al almacenar dato:', err);

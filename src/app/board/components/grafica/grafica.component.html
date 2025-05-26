@@ -90,11 +90,80 @@
       <div class="card m-3 problem-card">
         <div class="card-body">
           <h5 class="card-title">Historial</h5>
-          <div class="card mb-2" *ngFor="let problem of history">
+          <div class="card mb-2" *ngFor="let problem of history; let i = index">
             <div class="card-body">
-              {{problem['nombre']}}
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="m-0">{{problem['nombre']}}</p>
+                <span class="material-symbols-outlined" (click)="deleteItem(i)">
+                  delete
+                </span>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row p-3" *ngIf="problemSelected">
+    <div class="col-sm-3 mb-4">
+      <div class="card step-card">
+        <div class="card-body">
+            <h5 class="card-title custom-title">Paso 1</h5>
+            <p>Parámetro de interés μ</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-4">
+      <div class="card step-card">
+        <div class="card-body">
+            <h5 class="card-title custom-title">Paso 2</h5>
+            <p>H0; μ = {{problemSelected['parametroDeInteres']}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-4">
+      <div class="card step-card">
+        <div class="card-body">
+            <h5 class="card-title custom-title">Paso 3</h5>
+            <p>H1; μ {{problemSelected['restriccion'] == 1 ? '<' : '>'}} {{problemSelected['parametroDeInteres']}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-4">
+      <div class="card step-card">
+        <div class="card-body">
+            <h5 class="card-title custom-title">Paso 4</h5>
+            <p>α = {{problemSelected['significacion']}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-4">
+      <div class="card step-card">
+        <div class="card-body">
+            <h5 class="card-title custom-title">Paso 5</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-4">
+      <div class="card step-card">
+        <div class="card-body">
+            <h5 class="card-title custom-title">Paso 6</h5>
+            <p>Se rechaza H0 si Zo {{problemSelected['restriccion'] == 1 ? '>' : '<'}} {{problemSelected['z0'] | number : '1.2-2'}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-4">
+      <div class="card step-card">
+        <div class="card-body">
+            <h5 class="card-title custom-title">Paso 7</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-4">
+      <div class="card step-card">
+        <div class="card-body">
+            <h5 class="card-title custom-title">Paso 8</h5>
+            <p>Se rechaza H0</p>
         </div>
       </div>
     </div>
