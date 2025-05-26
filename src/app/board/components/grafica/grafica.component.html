@@ -1,0 +1,107 @@
+<div class="p-3">
+  <div class="row mb-5">
+    <div class="col-sm-8">
+      <div class="card m-3">
+        <div class="card-body">
+          <h5 class="card-title">Formulario de datos</h5>
+          <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="nombre">Nombre del problema</label>
+              <input type="text" id="nombre" formControlName="nombre" class="form-control" />
+              <div *ngIf="formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched" class="text-danger">
+                Ingresa un nombre para poder identificar tu problema.
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label for="tamanioMuestra">n</label>
+                <input type="number" id="tamanioMuestra" formControlName="tamanioMuestra" class="form-control" />
+                <div *ngIf="formulario.get('tamanioMuestra')?.invalid && formulario.get('tamanioMuestra')?.touched" class="text-danger">
+                  Número de elementos que conforman la muestra.
+                </div>
+              </div>
+
+              <div class="form-group col-sm-3">
+                <label for="significacion">α</label>
+                <input type="number" id="significacion" formControlName="significacion" class="form-control" />
+                <div *ngIf="formulario.get('significacion')?.invalid && formulario.get('significacion')?.touched" class="text-danger">
+                  Nivel de significación
+                </div>
+              </div>
+              
+              <div class="form-group col-sm-3">
+                <label for="tipoDesviacionEstandar">Desviación estándar</label>
+                <select id="tipoDesviacionEstandar" class="form-select" formControlName="tipoDesviacionEstandar" aria-label="Default select example">
+                  <option value="1">Muestral</option>
+                  <option value="2">Poblacional</option>
+                </select>
+
+                <div *ngIf="formulario.get('tipoDesviacionEstandar')?.invalid && formulario.get('tipoDesviacionEstandar')?.touched" class="text-danger">
+                  Seleccione una categoría válida.
+                </div>
+              </div>
+
+              <div class="form-group col-sm-3">
+                <label for="desviacionEstandar">σ</label>
+                <input type="number" id="desviacionEstandar" formControlName="desviacionEstandar" class="form-control" />
+                <div *ngIf="formulario.get('desviacionEstandar')?.invalid && formulario.get('desviacionEstandar')?.touched" class="text-danger">
+                  Desviación estándar
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-4">
+                <label for="mediaMuestral">x</label>
+                <input type="number" id="mediaMuestral" formControlName="mediaMuestral" class="form-control" />
+                <div *ngIf="formulario.get('mediaMuestral')?.invalid && formulario.get('mediaMuestral')?.touched" class="text-danger">
+                  Media muestral
+                </div>
+              </div>
+              <div class="form-group col-sm-4">
+                <label for="restriccion">Restricción</label>
+                <select id="restriccion" class="form-select" formControlName="restriccion" aria-label="Default select example">
+                  <option value="1"><</option>
+                  <option value="2">></option>
+                  <option value="3">!=</option>
+                </select>
+
+                <div *ngIf="formulario.get('restriccion')?.invalid && formulario.get('restriccion')?.touched" class="text-danger">
+                  Seleccione una categoría válida.
+                </div>
+              </div>
+              <div class="form-group col-sm-4">
+                <label for="parametroDeInteres">μ</label>
+                <input type="number" id="parametroDeInteres" formControlName="parametroDeInteres" class="form-control" />
+                <div *ngIf="formulario.get('parametroDeInteres')?.invalid && formulario.get('parametroDeInteres')?.touched" class="text-danger">
+                  Parámetro de interés
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center m-3">
+              <button type="submit" class="btn btn-primary" [disabled]="formulario.invalid">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="card m-3 problem-card">
+        <div class="card-body">
+          <h5 class="card-title">Historial</h5>
+          <div class="card mb-2" *ngFor="let problem of history">
+            <div class="card-body">
+              {{problem['nombre']}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <plotly-plot [data]="graphData" [layout]="layout"></plotly-plot>
+    </div>
+  </div>
+</div>
