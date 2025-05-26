@@ -1,3 +1,8 @@
+<nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand">Prueba de hipótesis</a>
+  </div>
+</nav>
 <div class="p-3">
   <div class="row mb-5">
     <div class="col-sm-8">
@@ -80,7 +85,7 @@
               </div>
             </div>
             <div class="d-flex justify-content-center m-3">
-              <button type="submit" class="btn btn-primary" [disabled]="formulario.invalid">Guardar</button>
+              <button type="submit" class="btn btn-warning" [disabled]="formulario.invalid">Guardar</button>
             </div>
           </form>
         </div>
@@ -91,7 +96,7 @@
         <div class="card-body">
           <h5 class="card-title">Historial</h5>
           <div class="card mb-2" *ngFor="let problem of history; let i = index">
-            <div class="card-body">
+            <div class="card-body" (click)="loadData(i)">
               <div class="d-flex justify-content-between align-items-center">
                 <p class="m-0">{{problem['nombre']}}</p>
                 <span class="material-symbols-outlined" (click)="deleteItem(i)">
@@ -105,6 +110,9 @@
     </div>
   </div>
   <div class="row p-3" *ngIf="problemSelected">
+    <div>
+      {{problemSelected | json}}
+    </div>
     <div class="col-sm-3 mb-4">
       <div class="card step-card">
         <div class="card-body">

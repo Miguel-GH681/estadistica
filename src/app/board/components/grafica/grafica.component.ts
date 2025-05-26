@@ -124,10 +124,16 @@ export class GraficaComponent implements OnInit{
   }
 
   deleteItem(index : number){
-    console.log({obj: this.history[index]});
     this.boardFirebaseSerice.removeDato(this.history[index]['id']).subscribe(()=>{
       this.getHistory();
     })    
+  }
+
+  loadData(index : number){
+    this.problemSelected = this.history[index];
+    console.log({s: this.problemSelected});
+    
+    this.calcularZ(this.problemSelected);
   }
 
   async onSubmit() {
