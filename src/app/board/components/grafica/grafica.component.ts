@@ -118,8 +118,7 @@ export class GraficaComponent implements OnInit{
     }
     
     const z1 = (valores['mediaMuestral'] - valores['parametroDeInteres']) / (valores['desviacionEstandar'] / Math.sqrt(valores['tamanioMuestra']))
-    this.problemSelected = {z0, z1};
-    
+    this.problemSelected = {z0, z1, ...valores};
     this.generateGraph(valores['mediaMuestral'], z0.toFixed(2), z1.toFixed(2), valores['restriccion']);
   }
 
@@ -131,9 +130,43 @@ export class GraficaComponent implements OnInit{
 
   loadData(index : number){
     this.problemSelected = this.history[index];
-    console.log({s: this.problemSelected});
-    
     this.calcularZ(this.problemSelected);
+  }
+
+  validarRechazoAceptacion(){
+    let tipoOperacion = this.problemSelected['restriccion'];
+
+    if(tipoOperacion == 1){
+      if(this.problemSelected['z0'] > this.problemSelected['z1']){
+        return this.problemSelected['z0'].toFixed(2) + ' > ' + this.problemSelected['z1'].toFixed(2);
+      } else{
+        return this.problemSelected['z0'].toFixed(2) + ' < ' + this.problemSelected['z1'].toFixed(2);
+      }
+    } else{
+      if(this.problemSelected['z0'] < this.problemSelected['z1']){
+        return this.problemSelected['z0'].toFixed(2) + ' < ' + this.problemSelected['z1'].toFixed(2);
+      } else{
+        return this.problemSelected['z0'].toFixed(2) + ' > ' + this.problemSelected['z1'].toFixed(2);
+      }
+    }
+  }
+
+  conclusionRechazoAceptacion(){
+    let tipoOperacion = this.problemSelected['restriccion'];
+
+    if(tipoOperacion == 1){
+      if(this.problemSelected['z0'] > this.problemSelected['z1']){
+        return 'Se rechaza la hipótesis';
+      } else{
+        return 'Se acepta la hipótesis';
+      }
+    } else{
+      if(this.problemSelected['z0'] < this.problemSelected['z1']){
+        return 'Se rechaza la hipótesis';
+      } else{
+        return 'Se acepta la hipótesis';
+      }
+    }
   }
 
   async onSubmit() {
@@ -150,10 +183,8 @@ export class GraficaComponent implements OnInit{
         tipoDesviacionEstandar
       }
       try {
-        await this.boardFirebaseSerice.addDato(newObject).subscribe(() =>{
-          this.calcularZ(newObject);
-          this.problemSelected = {...this.problemSelected, ...newObject};
-          console.log({ps: this.problemSelected});
+        this.calcularZ(newObject);
+        await this.boardFirebaseSerice.addDato(this.problemSelected).subscribe(() =>{
           this.formulario.reset();
         })
       } catch (err) {
