@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BoardService } from '../../services/board.service';
 import { BoardFirebaseService } from '../../services/boardFirebase.service';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
 import { CommonModule } from '@angular/common';
 import { jStat } from 'jstat';
+import Swal from 'sweetalert2'
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -137,11 +137,7 @@ export class GraficaComponent implements OnInit{
     let tipoOperacion = this.problemSelected['restriccion'];
 
     if(tipoOperacion == 1){
-      if(this.problemSelected['z0'] > this.problemSelected['z1']){
-        return this.problemSelected['z0'].toFixed(2) + ' > ' + this.problemSelected['z1'].toFixed(2);
-      } else{
-        return this.problemSelected['z0'].toFixed(2) + ' < ' + this.problemSelected['z1'].toFixed(2);
-      }
+      return this.problemSelected['z0'].toFixed(2) + ' > ' + this.problemSelected['z1'].toFixed(2);
     } else{
       if(this.problemSelected['z0'] < this.problemSelected['z1']){
         return this.problemSelected['z0'].toFixed(2) + ' < ' + this.problemSelected['z1'].toFixed(2);
@@ -170,6 +166,11 @@ export class GraficaComponent implements OnInit{
   }
 
   async onSubmit() {
+    if(this.problemSelected){
+      this.problemSelected = null;
+      return;
+    }
+
     if (this.formulario.valid) {
       const { tamanioMuestra, mediaMuestral, desviacionEstandar, significacion, parametroDeInteres, nombre, restriccion, tipoDesviacionEstandar } = this.formulario.value;
       const newObject = {
@@ -191,7 +192,21 @@ export class GraficaComponent implements OnInit{
         console.error('Error al almacenar dato:', err);
       }
     } else {
-      console.log('Formulario inválido');
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "error",
+        title: "Complete el formulario"
+      });      
     }
   }
 }
