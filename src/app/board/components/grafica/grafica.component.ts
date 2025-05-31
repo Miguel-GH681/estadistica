@@ -133,17 +133,11 @@ export class GraficaComponent implements OnInit{
     this.calcularZ(this.problemSelected);
   }
 
-  validarRechazoAceptacion(){
-    let tipoOperacion = this.problemSelected['restriccion'];
-
-    if(tipoOperacion == 1){
-      return this.problemSelected['z0'].toFixed(2) + ' > ' + this.problemSelected['z1'].toFixed(2);
+  validarRechazoAceptacion(){    
+    if(Number(this.problemSelected['z1']) > Number(this.problemSelected['z0'])){
+      return this.problemSelected['z1'].toFixed(2) + '>' + this.problemSelected['z0'].toFixed(2)
     } else{
-      if(this.problemSelected['z0'] < this.problemSelected['z1']){
-        return this.problemSelected['z0'].toFixed(2) + ' < ' + this.problemSelected['z1'].toFixed(2);
-      } else{
-        return this.problemSelected['z0'].toFixed(2) + ' > ' + this.problemSelected['z1'].toFixed(2);
-      }
+      return this.problemSelected['z1'].toFixed(2) + '<' + this.problemSelected['z0'].toFixed(2)
     }
   }
 
